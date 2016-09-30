@@ -1,0 +1,1 @@
+I don't run mocha tests from inside Vim. I use a separate terminal which uses nodemon to automatically re-run my tests when files change. I still need a shorcut for quickly running only certain tests. Here's some vimscript to help do that.
