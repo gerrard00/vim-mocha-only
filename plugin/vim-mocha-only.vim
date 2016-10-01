@@ -28,7 +28,10 @@ function! s:AddOnly()
       \ . g:only_string
       \ . strpart(line, result)
     call setline('.', newline)
+    return 1
   endif
+
+  return 0
 endfunction
 
 function! s:RemoveOnly()
@@ -40,8 +43,26 @@ function! s:RemoveOnly()
     let newline = strpart(line, 0, result)
       \ . strpart(line, result + strlen(g:only_string))
     call setline('.', newline)
+
+    return 1
   endif
+
+  return 0
+endfunction
+
+function! s:ToggleOnly()
+  if s:AddOnly()
+    return 1
+  endif
+
+  if s:RemoveOnly()
+    return 1
+  endif
+
+  echo 'Not a mocha only target.'
+  return 0
 endfunction
 
 command! MochaOnlyAdd call s:AddOnly()
 command! MochaOnlyRemove call s:RemoveOnly()
+command! MochaOnlyToggle call s:ToggleOnly()
