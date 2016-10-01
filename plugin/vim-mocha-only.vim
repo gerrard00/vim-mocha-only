@@ -1,4 +1,4 @@
-" if exists("g:loaded_mocha_only") || &cp || v:version < 700
+" if exists("g:loaded_mocha_only")
 "   finish
 " endif
 " let g:loaded_mocha_only = 1
@@ -18,12 +18,30 @@ function! s:find_target( line, exp )
    return 0
 endfunction
 
+function! s:clearonlyfrombuffer()
+  let lineNumber = line('^')
+  let lastLineNumber = line('$')
+
+  while lineNumber <  lastLineNumber
+    let line = getline(lineNumber)
+    let newline = substitute(line, g:only_string, '', '')
+
+    if (line != newline)
+      call setline(lineNumber, newline)
+    endif
+
+    let lineNumber += 1
+  endwhile
+
+endfunction
+
 function! s:AddOnly()
   let line = getline('.')
 
   let result = s:find_target(line, '\s*(')
   if result
-    " TODO: remove all other only statement in the file
+    " remove all other only statements in the file
+    call s:clearonlyfrombuffer()
     let newline = strpart(line, 0, result)
       \ . g:only_string
       \ . strpart(line, result)
@@ -39,7 +57,6 @@ function! s:RemoveOnly()
 
   let result = s:find_target(line, g:only_string . '\s*(')
   if result
-    " magic number 5 == strlen('.only')
     let newline = strpart(line, 0, result)
       \ . strpart(line, result + strlen(g:only_string))
     call setline('.', newline)
