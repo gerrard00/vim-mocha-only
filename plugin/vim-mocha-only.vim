@@ -1,7 +1,7 @@
-" if exists("g:loaded_mocha_only")
-"   finish
-" endif
-" let g:loaded_mocha_only = 1
+if exists("g:loaded_mocha_only")
+  finish
+endif
+let g:loaded_mocha_only = 1
 
 let g:mocha_only_targets = [ 'describe', 'it' ]
 let g:only_string = '.only'
