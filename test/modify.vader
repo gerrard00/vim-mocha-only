@@ -1,0 +1,67 @@
+Given (No only in file):
+  describe('description', () => {
+    describe('nested-description', () => {
+      it('does something', () => {
+        // foo
+      });
+      it('does something else', () => {
+        // bar
+      });
+    });
+  });
+
+Execute:
+  call cursor(3, 1)
+  MochaOnlyAdd
+
+Expect:
+  describe('description', () => {
+    describe('nested-description', () => {
+      it.only('does something', () => {
+        // foo
+      });
+      it('does something else', () => {
+        // bar
+      });
+    });
+  });
+
+# switch
+# seems like we start with the original given before each execute
+Execute:
+  call cursor(3, 1)
+  MochaOnlyAdd
+  call cursor(6, 1)
+  MochaOnlyAdd
+
+Expect:
+  describe('description', () => {
+    describe('nested-description', () => {
+      it('does something', () => {
+        // foo
+      });
+      it.only('does something else', () => {
+        // bar
+      });
+    });
+  });
+
+# toggle
+Execute:
+  call cursor(3, 1)
+  MochaOnlyAdd
+  call cursor(3, 1)
+  MochaOnlyToggle
+
+Expect:
+  describe('description', () => {
+    describe('nested-description', () => {
+      it('does something', () => {
+        // foo
+      });
+      it('does something else', () => {
+        // bar
+      });
+    });
+  });
+
